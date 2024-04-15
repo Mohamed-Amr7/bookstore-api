@@ -1,8 +1,7 @@
 import dotenv from 'dotenv'
-import path from 'path'
 import Joi from 'joi'
 
-dotenv.config({path: path.join(__dirname, '../../.env')});
+dotenv.config();
 
 const envVarsSchema = Joi.object()
     .keys({
@@ -28,16 +27,14 @@ const envVarsSchema = Joi.object()
 
 const {value: envVars, error} = envVarsSchema.prefs({errors: {label: 'key'}}).validate(process.env);
 
-error && throw new Error(`Config validation error: ${error.message}`);
+if(error) throw new Error(`Config validation error: ${error.message}`);
 
-export default
-{
+const config = {
     env: envVars.NODE_ENV,
     port: envVars.PORT,
     mongoose: {
         uri: envVars.MONGODB_URI + (envVars.NODE_ENV === 'test' ? '-test' : ''),
         options: {
-            useCreateIndex: true,
             useNewUrlParser: true,
             useUnifiedTopology: true,
         },
@@ -60,4 +57,6 @@ export default
         },
         from: envVars.EMAIL_FROM,
     },
-};
+}
+
+export default config

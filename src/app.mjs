@@ -5,11 +5,11 @@ import mongoSanitize from'express-mongo-sanitize'
 import compression from 'compression'
 import cors from 'cors'
 import passport from 'passport'
-import config from './config/config'
-import morgan from './config/morgan'
 import httpStatus from 'http-status'
-import { errorConverter, errorHandler } from './middlewares/error'
-import ApiError from './utils/ApiError'
+import config from './config/config.mjs'
+import morgan from './config/morgan.mjs'
+import { errorConverter, errorHandler } from './middlewares/error.mjs'
+import ApiError from './utils/ApiError.mjs'
 
 const app = express();
 
