@@ -27,17 +27,13 @@ const envVarsSchema = Joi.object()
 
 const {value: envVars, error} = envVarsSchema.prefs({errors: {label: 'key'}}).validate(process.env);
 
-if(error) throw new Error(`Config validation error: ${error.message}`);
+if (error) throw new Error(`Config validation error: ${error.message}`);
 
 const config = {
     env: envVars.NODE_ENV,
     port: envVars.PORT,
     mongoose: {
         uri: envVars.MONGODB_URI + (envVars.NODE_ENV === 'test' ? '-test' : ''),
-        options: {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        },
     },
     jwt: {
         secret: envVars.JWT_SECRET,
