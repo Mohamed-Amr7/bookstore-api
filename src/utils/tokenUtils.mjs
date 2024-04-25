@@ -1,5 +1,5 @@
 import logger from "../config/logger.mjs";
-import {Token} from "../models/index.js";
+import {Token} from "../models/index.mjs";
 
 export const scheduleTokenCleanup = () => {
     setInterval(async () => {
