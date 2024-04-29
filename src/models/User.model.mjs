@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 import validator from 'validator'
 import bcrypt from 'bcryptjs'
 import {toJSON} from './plugins/index.mjs'
-import {ROLES} from "../config/roles.mjs";
+import {ROLES} from "../constants/roles.mjs";
 
 const userSchema = mongoose.Schema(
     {
