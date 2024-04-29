@@ -1,7 +1,7 @@
 import express from "express";
 import authRoute from "./auth.route.mjs";
 
-export const router = express.Router();
+const router = express.Router();
 
 const routes = [
     {
@@ -14,3 +14,4 @@ routes.forEach((route) => {
     router.use(route.path, route.route);
 });
 
+export default router
