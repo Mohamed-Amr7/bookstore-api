@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 import validator from 'validator'
 import bcrypt from 'bcryptjs'
 import {toJSON} from './plugins/index.mjs'
-import roles from "../config/roles.mjs";
+import {ROLES} from "../config/roles.mjs";
 
 const userSchema = mongoose.Schema(
     {
@@ -38,7 +38,7 @@ const userSchema = mongoose.Schema(
         },
         role: {
             type: String,
-            enum: roles,
+            enum: ROLES,
             default: 'user',
         },
         isEmailVerified: {
@@ -87,6 +87,5 @@ userSchema.pre('save', async function (next) {
  * @typedef User
  */
 const User = mongoose.model('User', userSchema)
-
 export default User
 

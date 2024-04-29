@@ -9,6 +9,7 @@ import auth from 'express-rbac'
 import httpStatus from 'http-status'
 import config from './config/config.mjs'
 import morgan from './config/morgan.mjs'
+import cookieParser from "cookie-parser"
 import {jwtStrategy} from "./config/passport.mjs";
 import {errorConverter, errorHandler} from './middlewares/error.mjs'
 import ApiError from './utils/ApiError.mjs'
@@ -20,7 +21,7 @@ if (config.env !== 'test') {
     app.use(morgan.successHandler);
     app.use(morgan.errorHandler);
 }
-
+app.use(cookieParser())
 // set security HTTP headers
 app.use(helmet());
 
@@ -42,10 +43,10 @@ app.use(cors());
 app.options('*', cors());
 
 app.use(passport.initialize());
-passport.use('jwt', jwtStrategy)
+passport.use(jwtStrategy)
 
 app.use(auth.authorize({
-        bindToProperty: 'payload'
+        bindToProperty: 'user'
     }, (req, done) => {
         let auth = {
             roles: ROLES,
@@ -53,7 +54,6 @@ app.use(auth.authorize({
         done(auth);
     })
 );
-
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
