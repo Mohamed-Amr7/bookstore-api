@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import moment from 'moment'
 import config from "../config/config.mjs";
 import {Token} from "../models/index.mjs";
-import {tokenTypes} from "../config/tokens.mjs";
+import {TOKEN_TYPES} from "../constants/tokens.mjs";
 
 /**
  * Generate token
@@ -64,11 +64,11 @@ const verifyToken = async (token, type) => {
  */
 const generateAuthTokens = async (user) => {
     const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
-    const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
+    const accessToken = generateToken(user.id, accessTokenExpires, TOKEN_TYPES.ACCESS);
 
     const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
-    const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
-    await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
+    const refreshToken = generateToken(user.id, refreshTokenExpires, TOKEN_TYPES.REFRESH);
+    await saveToken(refreshToken, user.id, refreshTokenExpires, TOKEN_TYPES.REFRESH);
 
     return {
         access: {
@@ -81,7 +81,6 @@ const generateAuthTokens = async (user) => {
         },
     };
 };
-
 
 const tokenService = {
     generateToken,
