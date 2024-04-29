@@ -10,9 +10,11 @@ import httpStatus from 'http-status'
 import config from './config/config.mjs'
 import morgan from './config/morgan.mjs'
 import cookieParser from "cookie-parser"
+import routes from './routes/v1/index.mjs'
+import ApiError from './utils/ApiError.mjs'
+import {authLimiter} from "./middlewares/rateLimiter.mjs";
 import {jwtStrategy} from "./config/passport.mjs";
 import {errorConverter, errorHandler} from './middlewares/error.mjs'
-import ApiError from './utils/ApiError.mjs'
 import {ROLES} from "./config/roles.mjs";
 
 const app = express();
@@ -21,7 +23,9 @@ if (config.env !== 'test') {
     app.use(morgan.successHandler);
     app.use(morgan.errorHandler);
 }
+
 app.use(cookieParser())
+
 // set security HTTP headers
 app.use(helmet());
 
@@ -42,9 +46,11 @@ app.use(compression());
 app.use(cors());
 app.options('*', cors());
 
+// jwt authentication
 app.use(passport.initialize());
 passport.use(jwtStrategy)
 
+// Role-Based Access Control middleware for authorization
 app.use(auth.authorize({
         bindToProperty: 'user'
     }, (req, done) => {
@@ -53,7 +59,14 @@ app.use(auth.authorize({
         };
         done(auth);
     })
-);
+)
+
+// limit repeated failed requests to auth endpoints
+if (config.env === 'production') {
+    app.use('/v1/auth', authLimiter);
+}
+
+app.use('/v1', routes)
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
