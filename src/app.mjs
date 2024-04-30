@@ -15,7 +15,7 @@ import ApiError from './utils/ApiError.mjs'
 import {authLimiter} from "./middlewares/rateLimiter.mjs";
 import {jwtStrategy} from "./config/passport.mjs";
 import {errorConverter, errorHandler} from './middlewares/error.mjs'
-import {ROLES} from "./config/roles.mjs";
+import {ROLES} from "./constants/roles.mjs";
 
 const app = express();
 
