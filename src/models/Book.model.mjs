@@ -56,7 +56,7 @@ bookSchema.plugin(toJSON);
 bookSchema.plugin(paginate)
 
 /**
- * @typedef Token
+ * @typedef Book
  */
 const Book = mongoose.model('Book', bookSchema);
 
