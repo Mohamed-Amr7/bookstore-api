@@ -4,6 +4,7 @@ export const BOOK_CATEGORIES = {
     SCIENCE_FICTION: 'Science Fiction',
     MYSTERY: 'Mystery',
     THRILLER: 'Thriller',
+    COMEDY: 'Comedy',
     ROMANCE: 'Romance',
     HISTORY: 'History',
     BIOGRAPHY: 'Biography',
