@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import {toJSON} from "./plugins/index.mjs";
+import {paginate, toJSON} from "./plugins/index.mjs";
 import {BOOK_CATEGORIES} from "../constants/bookCategories.mjs";
-import paginate from "mongoose-paginate-v2";
+import {capitalizeString} from "../utils/stringUtils.mjs";
 
 const bookSchema = mongoose.Schema(
     {
@@ -33,9 +33,13 @@ const bookSchema = mongoose.Schema(
         categories: {
             type: [String],
             validate: {
-                validator: (value) =>
-                    value.every((category) => Object.values(BOOK_CATEGORIES).includes(category)),
-                message: 'Provided category is not allowed. Please choose from: ' + Object.values(BOOK_CATEGORIES).join(', '),
+                validator: (value) => {
+                    const formattedCategories = value.map(capitalizeString)
+                    return formattedCategories.every((category) =>
+                        Object.values(BOOK_CATEGORIES).includes(category)
+                    )
+                },
+                message: 'Provided category is not allowed. Please choose from: ' + Object.values(BOOK_CATEGORIES).sort().join(', '),
             },
         },
         stock: {
