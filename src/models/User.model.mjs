@@ -38,7 +38,7 @@ const userSchema = mongoose.Schema(
         },
         role: {
             type: String,
-            enum: ROLES,
+            enum: Object.values(ROLES),
             default: 'user',
         },
         isEmailVerified: {

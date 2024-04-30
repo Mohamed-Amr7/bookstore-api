@@ -55,7 +55,7 @@ app.use(auth.authorize({
         bindToProperty: 'user'
     }, (req, done) => {
         let auth = {
-            roles: ROLES,
+            roles: Object.values(ROLES),
         };
         done(auth);
     })
