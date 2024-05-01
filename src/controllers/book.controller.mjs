@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import catchAsync from "../utils/catchAsync.mjs";
-import {bookService} from "../services/index.mjs";
+import {bookService, userService} from "../services/index.mjs";
 
 const getBookById = catchAsync(async (req, res) => {
     const book = await bookService.getBookById(req.params.id)
@@ -13,10 +13,22 @@ const addBook = catchAsync(async (req, res) => {
     res.status(httpStatus.CREATED).json({ message: "Book created", data: book });
 })
 
+const updateBook = catchAsync(async (req, res) => {
+    const book = await bookService.updateBookById(req.params.id, req.body);
+    res.send(book);
+})
+
+const deleteBook = catchAsync(async (req, res) => {
+    const book = await bookService.deleteBookById(req.params.id)
+    res.send(book)
+})
+
 
 const bookController = {
+    getBookById,
     addBook,
-    getBookById
+    updateBook,
+    deleteBook,
 };
 
 export default bookController

@@ -4,7 +4,13 @@ import {isAdmin, isLoggedIn} from "../../middlewares/auth.mjs";
 
 const router = express.Router()
 
-router.get('/:id', bookController.getBookById)
-router.post('/', isLoggedIn, isAdmin, bookController.addBook)
+router.route('/')
+    .post(isLoggedIn, isAdmin, bookController.addBook)
+
+router.route('/:id')
+    .get(bookController.getBookById)
+    .put(isLoggedIn, isAdmin, bookController.updateBook)
+    .delete(isLoggedIn, isAdmin, bookController.deleteBook)
+
 
 export default router
