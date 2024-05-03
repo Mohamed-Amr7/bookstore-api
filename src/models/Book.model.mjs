@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import {paginate, toJSON} from "./plugins/index.mjs";
-import {BOOK_CATEGORIES} from "../constants/bookCategories.mjs";
+import {BOOK_GENRES} from "../constants/bookGenres.mjs";
 import {capitalizeString} from "../utils/stringUtils.mjs";
 
 const bookSchema = mongoose.Schema(
@@ -30,16 +30,16 @@ const bookSchema = mongoose.Schema(
         pageCount: {
             type: Number,
         },
-        categories: {
+        genres: {
             type: [String],
             validate: {
                 validator: (value) => {
-                    const formattedCategories = value.map(capitalizeString)
-                    return formattedCategories.every((category) =>
-                        Object.values(BOOK_CATEGORIES).includes(category)
+                    const formattedGenres = value.map(capitalizeString)
+                    return formattedGenres.every((category) =>
+                        Object.values(BOOK_GENRES).includes(category)
                     )
                 },
-                message: 'Provided category is not allowed. Please choose from: ' + Object.values(BOOK_CATEGORIES).sort().join(', '),
+                message: 'Provided category is not allowed. Please choose from: ' + Object.values(BOOK_GENRES).sort().join(', '),
             },
         },
         stock: {

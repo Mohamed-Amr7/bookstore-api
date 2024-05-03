@@ -1,4 +1,4 @@
-export const BOOK_CATEGORIES = {
+export const BOOK_GENRES = {
     FICTION: 'Fiction',
     NON_FICTION: 'Non Fiction',
     SCIENCE_FICTION: 'Science Fiction',
