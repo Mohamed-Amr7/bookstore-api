@@ -5,6 +5,7 @@ import {isAdmin, isLoggedIn} from "../../middlewares/auth.mjs";
 const router = express.Router()
 
 router.route('/')
+    .get(bookController.getBooks)
     .post(isLoggedIn, isAdmin, bookController.addBook)
 
 router.route('/:id')

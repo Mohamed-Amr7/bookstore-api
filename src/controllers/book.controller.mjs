@@ -1,16 +1,36 @@
 import httpStatus from "http-status";
 import catchAsync from "../utils/catchAsync.mjs";
-import {bookService, userService} from "../services/index.mjs";
+import {bookService} from "../services/index.mjs";
 
 const getBookById = catchAsync(async (req, res) => {
     const book = await bookService.getBookById(req.params.id)
     res.status(httpStatus.OK).send(book)
 })
 
+const getBooks = catchAsync(async (req, res) => {
+    const paginatedBooks = await bookService.queryBooks(req.query)
+
+    if (paginatedBooks.totalDocs === 0) return res.status(httpStatus.OK).json({
+        message: "No books found matching your search criteria."
+    })
+
+    const response = {
+        message: 'Successfully retrieved books!', data: paginatedBooks.docs, pagination: {
+            page: paginatedBooks.page,
+            limit: paginatedBooks.limit,
+            total_pages: paginatedBooks.totalPages,
+            hasPrevPage: paginatedBooks.hasPrevPage,
+            hasNextPage: paginatedBooks.hasNextPage
+        },
+    };
+
+    res.status(httpStatus.OK).send(response)
+})
+
 const addBook = catchAsync(async (req, res) => {
     const bookData = req.body
     const book = await bookService.createBook(bookData)
-    res.status(httpStatus.CREATED).json({ message: "Book created", data: book });
+    res.status(httpStatus.CREATED).json({message: "Book created", data: book});
 })
 
 const updateBook = catchAsync(async (req, res) => {
@@ -25,10 +45,7 @@ const deleteBook = catchAsync(async (req, res) => {
 
 
 const bookController = {
-    getBookById,
-    addBook,
-    updateBook,
-    deleteBook,
+    getBookById, getBooks, addBook, updateBook, deleteBook,
 };
 
 export default bookController
