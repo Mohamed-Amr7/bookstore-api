@@ -59,13 +59,17 @@ export const updateUserById = async (userId, updateBody) => {
 /**
  * Delete user by ID.
  * @param {ObjectId} userId - The ID of the user to delete.
+ * @param {string} password - The password of the user to delete.
  * @returns {Promise<User>} - The deleted user object.
  * @throws {ApiError} - If the user is not found.
  */
-export const deleteUserById = async (userId) => {
+export const deleteUserById = async (userId, password) => {
     const user = await getUserById(userId);
     if (!user) {
         throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    }
+    if (!(await user.isPasswordMatch(password))) {
+        throw new ApiError(httpStatus.BAD_REQUEST, "Incorrect password");
     }
     await User.findByIdAndDelete(userId)
     return user;
