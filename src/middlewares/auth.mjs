@@ -6,8 +6,8 @@ import logger from "../config/logger.mjs";
 
 export const isLoggedIn = (req, res, next) => {
     passport.authenticate('jwt', {session: false}, (err, user, info) => {
-        if (err) {
-            return next(err);
+        if (err || info) {
+            return next(err || info);
         }
 
         if (!user) {
