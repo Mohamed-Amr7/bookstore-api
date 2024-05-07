@@ -3,22 +3,21 @@ import {paginate, toJSON} from "./plugins/index.mjs";
 import {BOOK_GENRES} from "../constants/bookGenres.mjs";
 import {capitalizeString} from "../utils/stringUtils.mjs";
 
-
 /**
  * @typedef Book
- * @property {string} _id - The ID of the book
- * @property {string} title - The title of the book
- * @property {string} author - The author of the book
- * @property {number} price - The price of the book
- * @property {string} isbn - The ISBN of the book
- * @property {string} description - The description of the book
- * @property {Date} publicationDate - The publication date of the book
- * @property {number} pageCount - The page count of the book
- * @property {Array<string>} genres - The genres of the book
- * @property {number} stock - The stock quantity of the book
- * @property {string} coverImage - The URL of the cover image of the book
- * @property {Date} createdAt - The timestamp when the book was created
- * @property {Date} updatedAt - The timestamp when the book was last updated
+ * @property {string} _id - The ID of the book.
+ * @property {string} title - The title of the book.
+ * @property {string} author - The author of the book.
+ * @property {number} price - The price of the book.
+ * @property {string} isbn - The ISBN of the book. Unique.
+ * @property {string} description - The description of the book.
+ * @property {Date} publicationDate - The publication date of the book.
+ * @property {number} pageCount - The page count of the book.
+ * @property {Array<string>} genres - Array of genres the book belongs to.
+ * @property {number} stock - The stock quantity of the book.
+ * @property {string} coverImage - URL of the cover image of the book.
+ * @property {Date} createdAt - The timestamp when the book was created.
+ * @property {Date} updatedAt - The timestamp when the book was last updated.
  */
 const bookSchema = mongoose.Schema(
     {
