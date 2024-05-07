@@ -13,18 +13,7 @@ export const createBook = async (bookBody) => {
     try {
         return await Book.create(bookBody)
     } catch (err) {
-        if (err.name === 'ValidationError') {
-            const validationErrors = [];
-            for (const field in err.errors) {
-                validationErrors.push({
-                    field: field,
-                    message: err.errors[field].message,
-                });
-            }
-            throw new ApiError(httpStatus.BAD_REQUEST, 'Validation errors', {validationErrors});
-        } else if (err.name === 'MongoServerError') {
-            throw new ApiError(httpStatus.BAD_REQUEST, err.message)
-        }
+        throw new ApiError(httpStatus.BAD_REQUEST, err.message)
     }
 };
 
@@ -45,18 +34,7 @@ export const updateBookById = async (bookId, updateBody) => {
         await book.save()
         return book
     } catch (err) {
-        if (err.name === 'ValidationError') {
-            const validationErrors = [];
-            for (const field in err.errors) {
-                validationErrors.push({
-                    field: field,
-                    message: err.errors[field].message,
-                });
-            }
-            throw new ApiError(httpStatus.BAD_REQUEST, 'Validation errors', {validationErrors});
-        } else if (err.name === 'MongoServerError') {
-            throw new ApiError(httpStatus.BAD_REQUEST, err.message)
-        }
+        throw new ApiError(httpStatus.BAD_REQUEST, err.message)
     }
 };
 
