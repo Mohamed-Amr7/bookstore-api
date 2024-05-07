@@ -15,7 +15,7 @@ export const errorConverter = (err, req, res, next) => {
     next(error);
 };
 
-export const errorHandler = (err, req, res) => {
+export const errorHandler = (err, req, res, next) => {
     let {statusCode, message} = err;
     if (config.env === 'production' && !err.isOperational) {
         statusCode = httpStatus.INTERNAL_SERVER_ERROR;
@@ -33,5 +33,6 @@ export const errorHandler = (err, req, res) => {
     config.env === 'development' && logger.error(err);
 
     res.status(statusCode).send(response);
+    next()
 };
 
