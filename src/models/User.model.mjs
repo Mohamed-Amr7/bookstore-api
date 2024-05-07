@@ -4,6 +4,18 @@ import bcrypt from 'bcryptjs'
 import {toJSON} from './plugins/index.mjs'
 import {ROLES} from "../constants/roles.mjs";
 
+
+/**
+ * @typedef User
+ * @property {string} _id - The ID of the user
+ * @property {string} name - The name of the user
+ * @property {string} email - The email of the user
+ * @property {string} password - The password of the user
+ * @property {string} role - The role of the user (admin, user)
+ * @property {boolean} isEmailVerified - Indicates whether the user's email is verified
+ * @property {Date} createdAt - The timestamp when the user was created
+ * @property {Date} updatedAt - The timestamp when the user was last updated
+ */
 const userSchema = mongoose.Schema(
     {
         name: {
@@ -82,9 +94,6 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
-/**
- * @typedef User
- */
 const User = mongoose.model('User', userSchema)
 export default User
 
