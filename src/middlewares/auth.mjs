@@ -6,7 +6,7 @@ import {ROLES} from "../constants/roles.mjs";
 export const isLoggedIn = (req, res, next) => {
     passport.authenticate('jwt', {session: false}, (err, user, info) => {
         if (err || info || !user) {
-            throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate')
+            next(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'))
         }
 
         req.user = user;
