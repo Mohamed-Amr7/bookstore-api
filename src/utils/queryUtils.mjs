@@ -1,4 +1,4 @@
-export const getValidSearchFilters = (filters) => {
+export const getValidBookSearchFilters = (filters) => {
     const validFilters = {};
 
     if (filters.search) {
@@ -48,7 +48,7 @@ export const getValidSearchFilters = (filters) => {
     return validFilters;
 }
 
-export const getValidSortOptions = (sortCriteria) => {
+export const getValidBookSortOptions = sortCriteria => {
     const sortOptions = {}
     for (const criterion of sortCriteria) {
         let [field, direction] = criterion.split(':');
