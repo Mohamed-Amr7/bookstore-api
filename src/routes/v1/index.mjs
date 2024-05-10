@@ -3,6 +3,7 @@ import authRoute from "./auth.route.mjs";
 import bookRoute from "./book.route.mjs";
 import userRoute from "./user.route.mjs";
 import cartRoute from "./cart.route.mjs";
+import orderRoute from "./order.route.mjs";
 
 const router = express.Router();
 
@@ -22,6 +23,10 @@ const routes = [
     {
         path: '/cart',
         route: cartRoute
+    },
+    {
+        path: '/orders',
+        route: orderRoute
     }
 ];
 
