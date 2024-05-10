@@ -1,7 +1,7 @@
 import httpStatus from "http-status";
 import ApiError from "../utils/ApiError.mjs";
 import {Book} from "../models/index.mjs";
-import {getValidSearchFilters, getValidSortOptions} from "../utils/queryUtils.mjs";
+import {getValidBookSearchFilters, getValidBookSortOptions} from "../utils/queryUtils.mjs";
 
 
 /**
@@ -121,8 +121,8 @@ const getBookById = async (id) => {
 const queryBooks = async (query) => {
     const {page = 1, limit = 10, sort, ...filters} = query
     const sortCriteria = sort ? sort.split('|') : [];
-    const sortOptions = getValidSortOptions(sortCriteria);
-    const validSearchFilters = getValidSearchFilters(filters)
+    const sortOptions = getValidBookSortOptions(sortCriteria);
+    const validSearchFilters = getValidBookSearchFilters(filters)
     const options = {
         page,
         limit,
