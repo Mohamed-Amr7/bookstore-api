@@ -144,7 +144,7 @@ const revertStockUpdates = async (items) => {
         try {
             await Book.findByIdAndUpdate(
                 bookId,
-                {$inc: {stock: quantity}, $set: {updatedAt: new Date()}}
+                {$inc: {stock: quantity , __v: 1}, $set: {updatedAt: new Date()}}
             );
         } catch (error) {
             logger.error(`Failed to revert stock update for book ${bookId}: ${error.message}`);
