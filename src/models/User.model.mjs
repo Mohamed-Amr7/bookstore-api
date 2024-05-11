@@ -11,6 +11,8 @@ import {ROLES} from "../constants/roles.mjs";
  * @property {string} email - The email address of the user.
  * @property {string} password - The password of the user.
  * @property {string} role - The role of the user (e.g., user, admin).
+ * @property {string} address - The address of the user.
+ * @property {string} phone - The user's contact phone number.
  * @property {boolean} isEmailVerified - Indicates if the user's email is verified.
  * @property {Date} createdAt - The timestamp when the user was created.
  * @property {Date} updatedAt - The timestamp when the user was last updated.
@@ -50,6 +52,14 @@ const userSchema = mongoose.Schema(
             type: String,
             enum: Object.values(ROLES),
             default: 'user',
+        },
+        address: {
+            type: String,
+            trim: true
+        },
+        phone: {
+            type: String,
+            trim: true
         },
         isEmailVerified: {
             type: Boolean,
