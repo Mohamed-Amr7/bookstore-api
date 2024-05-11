@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import ApiError from "../utils/ApiError.mjs";
 import {Book} from "../models/index.mjs";
 import {getValidBookSearchFilters, getValidBookSortOptions} from "../utils/queryUtils.mjs";
+import logger from "../config/logger.mjs";
 
 
 /**
@@ -138,6 +139,18 @@ const queryBooks = async (query) => {
 
 };
 
+const revertStockUpdates = async (items) => {
+    for (const {bookId, quantity} of items) {
+        try {
+            await Book.findByIdAndUpdate(
+                bookId,
+                {$inc: {stock: quantity}, $set: {updatedAt: new Date()}}
+            );
+        } catch (error) {
+            logger.error(`Failed to revert stock update for book ${bookId}: ${error.message}`);
+        }
+    }
+}
 
 const bookService = {
     createBook,
@@ -145,6 +158,7 @@ const bookService = {
     deleteBookById,
     getBookById,
     queryBooks,
+    revertStockUpdates,
 }
 
 export default bookService
