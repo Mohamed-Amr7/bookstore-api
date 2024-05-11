@@ -10,14 +10,15 @@ const getBookById = catchAsync(async (req, res) => {
 const getBooks = catchAsync(async (req, res) => {
     const paginatedBooks = await bookService.queryBooks(req.query)
 
-    if (paginatedBooks.totalDocs === 0) return res.status(httpStatus.OK).json({
-        message: "No books found matching your search criteria."
+    if (paginatedBooks.totalDocs === 0) return res.status(httpStatus.NOT_FOUND).json({
+        message: "No books found matching your search criteria"
     })
 
     const response = {
-        message: 'Successfully retrieved books!', data: paginatedBooks.docs, pagination: {
-            page: paginatedBooks.page,
+        message: 'Books retrieved successfully', data: paginatedBooks.docs, pagination: {
+            totalDocs: paginatedBooks.totalDocs,
             limit: paginatedBooks.limit,
+            page: paginatedBooks.page,
             total_pages: paginatedBooks.totalPages,
             hasPrevPage: paginatedBooks.hasPrevPage,
             hasNextPage: paginatedBooks.hasNextPage
