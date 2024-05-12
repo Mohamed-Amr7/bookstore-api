@@ -60,7 +60,7 @@ const addOrder = async (userId, orderDetails) => {
         throw new ApiError(httpStatus.BAD_REQUEST, "Failed to add order", true, error.message);
     }
     if (!order.shippingAddress) {
-        await Order.findByIdAndDelete(order._id);
+        await Order.findByIdAndDelete(order.id);
         throw new ApiError(httpStatus.BAD_REQUEST, "Please provide a shipping address");
     }
     for (const item of order.items) {
@@ -77,12 +77,12 @@ const addOrder = async (userId, orderDetails) => {
                 )
 
                 if (!updatedBook) {
-                    await Order.findByIdAndDelete(order._id)
+                    await Order.findByIdAndDelete(order.id)
                     await bookService.revertStockUpdates(updatedBooks)
                     throw new ApiError(httpStatus.BAD_REQUEST, "Insufficient stock for one or more items")
                 }
 
-                updatedBooks.push({bookId: item.book._id, quantity: item.quantity})
+                updatedBooks.push({bookId: item.book.id, quantity: item.quantity})
 
                 if (item.book.__v + 1 !== updatedBook.__v) {
                     throw new ApiError(httpStatus.CONFLICT, "Concurrency conflict occurred while updating book stock")
@@ -96,7 +96,7 @@ const addOrder = async (userId, orderDetails) => {
 
         if (isRetryRequired) {
             // Retry count exceeded, handle error
-            await Order.findByIdAndDelete(order._id);
+            await Order.findByIdAndDelete(order.id);
             await bookService.revertStockUpdates(updatedBooks);
             throw new ApiError(lastError.statusCode, lastError.message, true, lastError.stack);
         }
@@ -119,7 +119,7 @@ const deleteOrder = async (userId, id) => {
 
     try {
         for (const item of order.items) {
-            await Book.findByIdAndUpdate(item.book._id, {$inc: {stock: item.quantity}});
+            await Book.findByIdAndUpdate(item.book.id, {$inc: {stock: item.quantity}});
         }
     } catch (error) {
         logger.error(`Error updating book stock while deleting order: ${error.message}`);
