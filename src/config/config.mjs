@@ -7,6 +7,7 @@ const envVarsSchema = Joi.object()
     .keys({
         NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
         PORT: Joi.number().default(3000),
+        CLIENT_URL: Joi.string().uri().description('full URL (including protocol) where the frontend application is hosted.'),
         MONGODB_URI: Joi.string().required().description('Mongo DB URI'),
         JWT_SECRET: Joi.string().required().description('JWT secret key'),
         JWT_ACCESS_EXPIRATION_MINUTES: Joi.number().default(30).description('minutes after which access tokens expire'),
@@ -17,11 +18,9 @@ const envVarsSchema = Joi.object()
         JWT_VERIFY_EMAIL_EXPIRATION_MINUTES: Joi.number()
             .default(10)
             .description('minutes after which verify email token expires'),
-        SMTP_HOST: Joi.string().description('server that will send the emails'),
-        SMTP_PORT: Joi.number().description('port to connect to the email server'),
+        SMTP_SERVICE: Joi.string().description('service used to send emails'),
         SMTP_USERNAME: Joi.string().description('username for email server'),
         SMTP_PASSWORD: Joi.string().description('password for email server'),
-        EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
     })
     .unknown();
 
@@ -32,6 +31,7 @@ if (error) throw new Error(`Config validation error: ${error.message}`);
 const config = {
     env: envVars.NODE_ENV,
     port: envVars.PORT,
+    clientUrl: envVars.CLIENT_URL,
     mongoose: {
         uri: envVars.MONGODB_URI + (envVars.NODE_ENV === 'test' ? '-test' : ''),
     },
@@ -50,14 +50,12 @@ const config = {
     },
     email: {
         smtp: {
-            host: envVars.SMTP_HOST,
-            port: envVars.SMTP_PORT,
+            service:envVars.SMTP_SERVICE,
             auth: {
                 user: envVars.SMTP_USERNAME,
                 pass: envVars.SMTP_PASSWORD,
             },
         },
-        from: envVars.EMAIL_FROM,
     },
 }
 
