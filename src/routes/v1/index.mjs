@@ -1,9 +1,10 @@
-import express from "express";
-import authRoute from "./auth.route.mjs";
-import bookRoute from "./book.route.mjs";
-import userRoute from "./user.route.mjs";
-import cartRoute from "./cart.route.mjs";
-import orderRoute from "./order.route.mjs";
+import express from "express"
+import authRoute from "./auth.route.mjs"
+import bookRoute from "./book.route.mjs"
+import userRoute from "./user.route.mjs"
+import profileRoute from "./profile.route.mjs"
+import cartRoute from "./cart.route.mjs"
+import orderRoute from "./order.route.mjs"
 
 const router = express.Router();
 
@@ -19,6 +20,10 @@ const routes = [
     {
         path: '/users',
         route: userRoute
+    },
+    {
+      path: '/profile',
+      route: profileRoute
     },
     {
         path: '/cart',

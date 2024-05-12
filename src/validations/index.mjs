@@ -1,4 +1,4 @@
 import authValidation from "./auth.validation.mjs"
-import userValidation from "./user.validation.mjs"
+import profileValidation from "./profileValidation.mjs"
 
-export {authValidation, userValidation}
+export {authValidation, profileValidation}

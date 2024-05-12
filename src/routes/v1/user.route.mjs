@@ -1,17 +1,22 @@
-import express from "express";
+import express from "express"
+import {userController} from "../../controllers/index.mjs"
+import {isAdmin, isLoggedIn} from "../../middlewares/auth.mjs"
+import userValidation from "../../validations/user.validation.mjs";
 import validate from "../../middlewares/validate.mjs";
-import {isLoggedIn} from "../../middlewares/auth.mjs";
-import {userController} from "../../controllers/index.mjs";
-import {userValidation} from "../../validations/index.mjs";
 
 const router = express.Router();
+router.use(isLoggedIn, isAdmin)
 
-router
-    .route('/me')
-    .get(isLoggedIn,userController.getUserProfile)
-    .put(isLoggedIn, validate(userValidation.updateUserProfile), userController.updateUserProfile)
-    .delete(isLoggedIn, validate(userValidation.deleteUserProfile), userController.deleteUserProfile);
+router.route('/:id')
+    .get(validate(userValidation.getUser), userController.getUser)
+    .put(validate(userValidation.updateUser), userController.updateUser)
 
-router.post('/me/password',isLoggedIn, validate(userValidation.changePassword), userController.changePassword)
+router.route('/:id/admin')
+    .post(validate(userValidation.grantAdmin), userController.grantAdmin)
+    .delete(validate(userValidation.revokeAdmin), userController.revokeAdmin);
+
+router.route('/:id/order-manager')
+    .post(validate(userValidation.grantOrderManager), userController.grantOrderManager)
+    .delete(validate(userValidation.revokeOrderManager), userController.revokeOrderManager);
 
 export default router
