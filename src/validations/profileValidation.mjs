@@ -1,14 +1,17 @@
 import Joi from 'joi'
-import {password} from './custom.validation.mjs'
+import {password, phoneNumber} from './custom.validation.mjs'
 
 const updateProfile = {
     body: Joi.object()
         .keys({
             email: Joi.string().email(),
             name: Joi.string(),
+            address: Joi.string(),
+            phone: Joi.string().trim().custom(phoneNumber),
         })
         .min(1),
 }
+
 const changePassword = {
     body: Joi.object()
         .keys({
@@ -32,8 +35,8 @@ const deleteProfile = {
 };
 
 const profileValidation = {
-    updateProfile: updateProfile,
-    deleteProfile: deleteProfile,
+    updateProfile,
+    deleteProfile,
     changePassword,
 };
 export default profileValidation
