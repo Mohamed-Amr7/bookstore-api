@@ -22,11 +22,11 @@ const changePassword = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).json({message: "Password Changed Successfully"})
 });
 
-const userController = {
+const profileController = {
     getUserProfile,
     updateUserProfile,
     deleteUserProfile,
     changePassword
 };
 
-export default userController
+export default profileController
