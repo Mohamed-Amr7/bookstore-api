@@ -1,8 +1,8 @@
 import express from "express"
 import {userController} from "../../controllers/index.mjs"
+import {userValidation} from "../../validations/index.mjs"
 import {isAdmin, isLoggedIn} from "../../middlewares/auth.mjs"
-import userValidation from "../../validations/user.validation.mjs";
-import validate from "../../middlewares/validate.mjs";
+import validate from "../../middlewares/validate.mjs"
 
 const router = express.Router();
 router.use(isLoggedIn, isAdmin)
