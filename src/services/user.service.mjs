@@ -1,6 +1,7 @@
-import httpStatus from "http-status";
-import {User} from "../models/index.mjs";
-import ApiError from "../utils/ApiError.mjs";
+import httpStatus from "http-status"
+import ApiError from "../utils/ApiError.mjs"
+import {User} from "../models/index.mjs"
+import {ROLES} from "../constants/roles.mjs"
 
 /**
  * Create a user.
@@ -16,7 +17,7 @@ export const createUser = async (userBody) => {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
     }
     return User.create(userBody);
-};
+}
 
 /**
  * Get user by ID.
@@ -25,7 +26,7 @@ export const createUser = async (userBody) => {
  */
 export const getUserById = async (id) => {
     return User.findById(id);
-};
+}
 
 /**
  * Get user by email.
@@ -34,7 +35,7 @@ export const getUserById = async (id) => {
  */
 export const getUserByEmail = async (email) => {
     return User.findOne({email});
-};
+}
 
 /**
  * Update user by ID.
@@ -73,7 +74,7 @@ export const deleteUserById = async (userId, password) => {
     }
     await User.findByIdAndDelete(userId)
     return user;
-};
+}
 
 /**
  * Change user's password.
@@ -95,8 +96,59 @@ export const changePassword = async (userId, updateBody) => {
     user.password = updateBody.newPassword
     await user.save()
     return user
-};
+}
 
+/**
+ * Grant admin role to a user.
+ * @param {ObjectId} userId - The ID of the user.
+ * @returns {Promise<User>} - The updated user object with the admin role.
+ * @throws {ApiError} - If the user is not found.
+ */
+export const grantAdmin = async (userId) => {
+    const user = await getUserById(userId);
+    if (!user) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    }
+    return setRole(userId, ROLES.ADMIN)
+}
+
+/**
+ * Grant order manager role to a user.
+ * @param {ObjectId} userId - The ID of the user.
+ * @returns {Promise<User>} - The updated user object with the order manager role.
+ * @throws {ApiError} - If the user is not found or is an admin.
+ */
+export const grantOrderManager = async (userId) => {
+    const user = await getUserById(userId);
+    if (!user) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    }
+    if (user.role === ROLES.ADMIN) {
+        throw new ApiError(httpStatus.FORBIDDEN, 'User is an admin');
+    }
+    return setRole(userId, ROLES.ORDER_MANAGER)
+}
+
+/**
+ * Set role for a user.
+ * @param {ObjectId} userId - The ID of the user.
+ * @param {string} role - The role to assign to the user.
+ * @returns {Promise<User>} - The updated user object with the assigned role.
+ * @throws {ApiError} - If the user is not found or an invalid role is provided.
+ */
+export const setRole = async (userId, role) => {
+    const user = await getUserById(userId);
+    if (!user) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    }
+    const isValidRole = Object.values(ROLES).includes(role);
+    if (!isValidRole) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid role');
+    }
+    user.role = role;
+    await user.save();
+    return user;
+}
 
 const userService = {
     createUser,
@@ -104,7 +156,10 @@ const userService = {
     getUserByEmail,
     updateUserById,
     deleteUserById,
-    changePassword
+    changePassword,
+    grantAdmin,
+    grantOrderManager,
+    setRole,
 };
 
 export default userService;
