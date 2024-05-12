@@ -1,8 +1,11 @@
 import jwt from 'jsonwebtoken'
 import moment from 'moment'
+import httpStatus from "http-status";
 import config from "../config/config.mjs";
+import userService from './user.service.mjs'
 import {Token} from "../models/index.mjs";
 import {TOKEN_TYPES} from "../constants/tokens.mjs";
+import ApiError from "../utils/ApiError.mjs";
 
 /**
  * Generate token
@@ -82,11 +85,41 @@ const generateAuthTokens = async (user) => {
     };
 };
 
+/**
+ * Generate reset password token
+ * @param {string} email
+ * @returns {Promise<string>}
+ */
+const generateResetPasswordToken = async (email) => {
+    const user = await userService.getUserByEmail(email)
+    if (!user) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email')
+    }
+    const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes')
+    const resetPasswordToken = generateToken(user.id, expires, TOKEN_TYPES.RESET_PASSWORD)
+    await saveToken(resetPasswordToken, user.id, expires, TOKEN_TYPES.RESET_PASSWORD)
+    return resetPasswordToken
+}
+
+/**
+ * Generate verify email token
+ * @param {User} user
+ * @returns {Promise<string>}
+ */
+const generateVerifyEmailToken = async (user) => {
+    const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
+    const verifyEmailToken = generateToken(user.id, expires, TOKEN_TYPES.VERIFY_EMAIL);
+    await saveToken(verifyEmailToken, user.id, expires, TOKEN_TYPES.VERIFY_EMAIL);
+    return verifyEmailToken;
+};
+
 const tokenService = {
     generateToken,
     saveToken,
     verifyToken,
     generateAuthTokens,
+    generateResetPasswordToken,
+    generateVerifyEmailToken
 };
 
 export default tokenService
