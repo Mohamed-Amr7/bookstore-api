@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
-import {toJSON} from "./plugins/index.mjs";
+import mongoose from "mongoose"
+import {toJSON} from "./plugins/index.mjs"
+import {bookService} from "../services/index.mjs";
 
 /**
  * @typedef {Object} CartItem
@@ -45,6 +46,22 @@ cartSchema.options.toJSON = {
         }
     }
 };
+
+cartSchema.pre('save', async function (next) {
+    const cart = this;
+    const updatedItems = [];
+
+    for (const item of cart.items) {
+        const book = await bookService.getBookById(item.book);
+        if (!book) {
+            continue;
+        }
+        updatedItems.push(item);
+    }
+
+    cart.items = updatedItems;
+    next();
+});
 
 cartSchema.plugin(toJSON);
 
