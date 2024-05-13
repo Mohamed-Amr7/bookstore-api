@@ -1,13 +1,13 @@
-import httpStatus from "http-status";
-import catchAsync from "../utils/catchAsync.mjs";
-import {bookService} from "../services/index.mjs";
+import httpStatus from "http-status"
+import catchAsync from "../utils/catchAsync.mjs"
+import {bookService} from "../services/index.mjs"
 
 const getBookById = catchAsync(async (req, res) => {
-    const book = await bookService.getBookById(req.params.id)
-    res.status(httpStatus.OK).send(book)
+    const book = await bookService.getBook(req.params.id)
+    res.status(httpStatus.OK).json({message: "Book retrieved successfully", data: {book}})
 })
 
-const getBooks = catchAsync(async (req, res) => {
+const queryBooks = catchAsync(async (req, res) => {
     const paginatedBooks = await bookService.queryBooks(req.query)
 
     if (paginatedBooks.totalDocs === 0) return res.status(httpStatus.NOT_FOUND).json({
@@ -15,7 +15,7 @@ const getBooks = catchAsync(async (req, res) => {
     })
 
     const response = {
-        message: 'Books retrieved successfully', data: paginatedBooks.docs, pagination: {
+        message: 'Books retrieved successfully', data: {books: paginatedBooks.docs}, pagination: {
             totalDocs: paginatedBooks.totalDocs,
             limit: paginatedBooks.limit,
             page: paginatedBooks.page,
@@ -31,22 +31,22 @@ const getBooks = catchAsync(async (req, res) => {
 const addBook = catchAsync(async (req, res) => {
     const bookData = req.body
     const book = await bookService.createBook(bookData)
-    res.status(httpStatus.CREATED).json({message: "Book created", data: book});
+    res.status(httpStatus.CREATED).json({message: "Book created", data: {book}})
 })
 
 const updateBook = catchAsync(async (req, res) => {
-    const book = await bookService.updateBookById(req.params.id, req.body);
-    res.send(book);
+    const book = await bookService.updateBook(req.params.id, req.body)
+    res.status(httpStatus.OK).json({message: "Book updated successfully", data: {book}})
 })
 
 const deleteBook = catchAsync(async (req, res) => {
-    const book = await bookService.deleteBookById(req.params.id)
-    res.send(book)
+    const book = await bookService.deleteBook(req.params.id)
+    res.status(httpStatus.OK).json({message: "Book deleted successfully", data: {book}})
 })
 
 
 const bookController = {
-    getBookById, getBooks, addBook, updateBook, deleteBook,
+    getBookById, queryBooks, addBook, updateBook, deleteBook,
 };
 
 export default bookController

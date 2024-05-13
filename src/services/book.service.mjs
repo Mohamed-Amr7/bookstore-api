@@ -4,6 +4,14 @@ import {Book} from "../models/index.mjs";
 import {getValidBookSearchFilters, getValidBookSortOptions} from "../utils/queryUtils.mjs";
 import logger from "../config/logger.mjs";
 
+/**
+ * Get book by id
+ * @param {ObjectId} id
+ * @returns {Promise<Book>}
+ */
+const getBookById = async (id) => {
+    return Book.findById(id)
+}
 
 /**
  * Create a book
@@ -18,6 +26,18 @@ export const createBook = async (bookBody) => {
     }
 };
 
+/**
+ * Get book by id
+ * @param {ObjectId} bookId
+ * @returns {Promise<Book>}
+ */
+export const getBook = async (bookId) => {
+    const book = await getBookById(bookId);
+    if (!book) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Book not found');
+    }
+    return book;
+};
 
 /**
  * Update book by id
@@ -25,7 +45,7 @@ export const createBook = async (bookBody) => {
  * @param {Object} updateBody
  * @returns {Promise<Book>}
  */
-export const updateBookById = async (bookId, updateBody) => {
+export const updateBook = async (bookId, updateBody) => {
     const book = await getBookById(bookId);
     if (!book) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Book not found');
@@ -44,7 +64,7 @@ export const updateBookById = async (bookId, updateBody) => {
  * @param {ObjectId} bookId
  * @returns {Promise<Book>}
  */
-export const deleteBookById = async (bookId) => {
+export const deleteBook = async (bookId) => {
     const book = await getBookById(bookId);
     if (!book) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Book not found');
@@ -53,14 +73,6 @@ export const deleteBookById = async (bookId) => {
     return book;
 };
 
-/**
- * Get book by id
- * @param {ObjectId} id
- * @returns {Promise<Book>}
- */
-const getBookById = async (id) => {
-    return Book.findById(id)
-}
 
 /**
  * @param {Object} query - An object containing query parameters for filtering, sorting, and pagination.
@@ -154,9 +166,9 @@ const revertStockUpdates = async (items) => {
 
 const bookService = {
     createBook,
-    updateBookById,
-    deleteBookById,
-    getBookById,
+    updateBook,
+    deleteBook,
+    getBook,
     queryBooks,
     revertStockUpdates,
 }
