@@ -169,6 +169,7 @@ const bookService = {
     updateBook,
     deleteBook,
     getBook,
+    getBookById,
     queryBooks,
     revertStockUpdates,
 }
