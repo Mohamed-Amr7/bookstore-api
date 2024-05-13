@@ -1,4 +1,5 @@
 import {parsePhoneNumberFromString} from 'libphonenumber-js'
+import {BOOK_GENRES} from "../constants/bookGenres.mjs";
 
 export const objectId = (value, helpers) => {
     if (!value.match(/^[0-9a-fA-F]{24}$/)) {
@@ -23,4 +24,21 @@ export const phoneNumber = (value, helpers) => {
         return helpers.message({custom: 'Invalid phone number'})
     }
     return value
+}
+
+export const isbn = (value, helpers) => {
+    const isValidIsbn = /^(?:\d{9}[\dX]|\d{13})$/.test(value);
+    if (!isValidIsbn) {
+        return helpers.message('"{{#label}}" must be a valid ISBN');
+    }
+    return value;
 };
+
+const validGenres = Object.values(BOOK_GENRES).map(genre => genre.toLowerCase())
+export const genre = (value, helpers) => {
+    const lowercaseValue = value.toLowerCase()
+    if (!validGenres.includes(lowercaseValue)) {
+        return helpers.message(`"${helpers.state.path}" must be one of: ${Object.values(BOOK_GENRES).join(', ')}`)
+    }
+    return lowercaseValue
+}
