@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
-import {paginate, toJSON} from "./plugins/index.mjs";
-import {User} from "./index.mjs";
+import {paginate, toJSON} from "./plugins/index.mjs"
+import {User} from "./index.mjs"
+import {ORDER_STATUS} from "../constants/index.mjs";
 
 /**
  * @typedef {Object} OrderItem
@@ -36,7 +37,7 @@ const orderSchema = new mongoose.Schema({
         ],
         status: {
             type: String,
-            enum: ['pending', 'confirmed', 'shipped', 'delivered'],
+            enum: Object.values(ORDER_STATUS),
             default: 'pending'
         },
         shippingAddress: {
