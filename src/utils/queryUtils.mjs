@@ -41,9 +41,9 @@ export const getValidBookSearchFilters = (filters) => {
     if (filters.pageCountMax) {
         validFilters.pageCount = {...validFilters.pageCount, $lte: filters.pageCountMax}
     }
-
     if (filters.genres) {
-        validFilters.genres = {$in: new RegExp(filters.genres, 'i')}
+        const genres = Array.isArray(filters.genres) ? filters.genres : [filters.genres];
+        validFilters.genres = {$all: genres.map(genre => new RegExp(genre, 'i'))};
     }
     return validFilters;
 }
