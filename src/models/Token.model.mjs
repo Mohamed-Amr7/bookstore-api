@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import {toJSON} from "./plugins/index.mjs";
-import {TOKEN_TYPES} from "../constants/tokens.mjs";
+import mongoose from 'mongoose'
+import {toJSON} from './plugins/index.mjs'
+import {TOKEN_TYPES} from '../constants/index.mjs'
 
 /**
  * @typedef Token

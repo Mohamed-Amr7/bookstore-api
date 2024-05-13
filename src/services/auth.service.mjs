@@ -1,9 +1,9 @@
-import httpStatus from "http-status";
+import httpStatus from 'http-status'
 import tokenService from './token.service.mjs'
 import userService from './user.service.mjs'
-import {Token} from "../models/index.mjs";
-import ApiError from "../utils/ApiError.mjs";
-import {TOKEN_TYPES} from "../constants/tokens.mjs";
+import {Token} from '../models/index.mjs'
+import {TOKEN_TYPES} from '../constants/index.mjs'
+import ApiError from '../utils/ApiError.mjs'
 
 /**
  * Login with username and password

@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import {paginate, toJSON} from "./plugins/index.mjs";
-import {BOOK_GENRES} from "../constants/bookGenres.mjs";
-import {capitalizeString} from "../utils/stringUtils.mjs";
+import mongoose from "mongoose"
+import {BOOK_GENRES} from "../constants/index.mjs"
+import {paginate, toJSON} from "./plugins/index.mjs"
+import {capitalizeString} from "../utils/stringUtils.mjs"
 
 /**
  * @typedef Book

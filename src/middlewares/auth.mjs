@@ -1,7 +1,8 @@
-import passport from "passport";
-import ApiError from "../utils/ApiError.mjs";
-import httpStatus from "http-status";
-import {ROLES} from "../constants/roles.mjs";
+import passport from 'passport'
+import ApiError from '../utils/ApiError.mjs'
+import httpStatus from 'http-status'
+import {ROLES} from '../constants/index.mjs'
+
 
 export const isLoggedIn = (req, res, next) => {
     passport.authenticate('jwt', {session: false}, (err, user, info) => {

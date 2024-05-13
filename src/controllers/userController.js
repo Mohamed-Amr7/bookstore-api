@@ -1,7 +1,7 @@
-import httpStatus from "http-status"
-import catchAsync from "../utils/catchAsync.mjs"
+import httpStatus from 'http-status'
+import catchAsync from '../utils/catchAsync.mjs'
 import {userService} from '../services/index.mjs'
-import {ROLES} from "../constants/roles.mjs";
+import {ROLES} from '../constants/index.mjs'
 
 const getUser = catchAsync(async (req, res) => {
     const {id: userId} = req.params

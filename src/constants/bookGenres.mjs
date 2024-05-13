@@ -1,4 +1,4 @@
-export const BOOK_GENRES = {
+const BOOK_GENRES = {
     FICTION: 'Fiction',
     NON_FICTION: 'Non Fiction',
     SCIENCE_FICTION: 'Science Fiction',
@@ -38,4 +38,6 @@ export const BOOK_GENRES = {
     TRUE_CRIME: 'True Crime',
     MEMOIR: 'Memoir',
     SOCIOLOGY: 'Sociology',
-};
+}
+
+export default BOOK_GENRES

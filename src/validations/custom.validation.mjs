@@ -1,5 +1,5 @@
 import {parsePhoneNumberFromString} from 'libphonenumber-js'
-import {BOOK_GENRES} from "../constants/bookGenres.mjs";
+import {BOOK_GENRES} from "../constants/index.mjs"
 
 export const objectId = (value, helpers) => {
     if (!value.match(/^[0-9a-fA-F]{24}$/)) {

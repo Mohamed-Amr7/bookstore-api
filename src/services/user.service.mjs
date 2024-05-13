@@ -1,7 +1,7 @@
-import httpStatus from "http-status"
-import ApiError from "../utils/ApiError.mjs"
-import {User} from "../models/index.mjs"
-import {ROLES} from "../constants/roles.mjs"
+import httpStatus from 'http-status'
+import ApiError from '../utils/ApiError.mjs'
+import {User} from '../models/index.mjs'
+import {ROLES} from '../constants/index.mjs'
 
 /**
  * Create a user.

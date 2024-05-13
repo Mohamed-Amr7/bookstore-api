@@ -1,6 +1,6 @@
 import Joi from 'joi'
 import {objectId, password, phoneNumber} from './custom.validation.mjs'
-import {ROLES} from "../constants/roles.mjs";
+import {ROLES} from '../constants/index.mjs'
 
 export const getUser = {
     params: Joi.object()

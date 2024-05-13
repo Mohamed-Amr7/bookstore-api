@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken'
 import moment from 'moment'
-import httpStatus from "http-status";
-import config from "../config/config.mjs";
+import httpStatus from "http-status"
+import config from "../config/config.mjs"
 import userService from './user.service.mjs'
-import {Token} from "../models/index.mjs";
-import {TOKEN_TYPES} from "../constants/tokens.mjs";
-import ApiError from "../utils/ApiError.mjs";
+import ApiError from '../utils/ApiError.mjs'
+import {Token} from "../models/index.mjs"
+import {TOKEN_TYPES} from '../constants/index.mjs'
 
 /**
  * Generate token
