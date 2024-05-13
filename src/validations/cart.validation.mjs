@@ -5,9 +5,11 @@ import {objectId} from './custom.validation.mjs';
 export const addToCart = {
     body: Joi.object()
         .keys({
-            bookId: Joi.string().required().custom(objectId),
-            quantity: Joi.number().integer().min(1).required(),
-        }).required(),
+            items: Joi.array().items(Joi.object().keys({
+                bookId: Joi.string().required().custom(objectId),
+                quantity: Joi.number().integer().min(1).required(),
+            })).required(),
+        }),
 }
 
 export const updateCartQuantities = {

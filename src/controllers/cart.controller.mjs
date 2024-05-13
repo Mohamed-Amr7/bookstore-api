@@ -8,12 +8,12 @@ const getCart = catchAsync(async (req, res) => {
 })
 
 const addToCart = catchAsync(async (req, res) => {
-    const cart = await cartService.addToCart(req.user.id, req.body.books)
+    const cart = await cartService.addToCart(req.user.id, req.body.items)
     res.status(httpStatus.CREATED).json({message: "Added to cart successfully.", data: {cart}});
 })
 
 const removeFromCart = catchAsync(async (req, res) => {
-    const cart = await cartService.removeFromCart(req.user.id, req.body.books)
+    const cart = await cartService.removeFromCart(req.user.id, req.body.items)
     res.status(httpStatus.OK).json({message: "Removed from cart successfully.", data: {cart}});
 })
 
@@ -23,7 +23,7 @@ const removeBookFromCart = catchAsync(async (req, res) => {
 })
 
 const updateCartQuantities = catchAsync(async (req, res) => {
-    const cart = await cartService.updateCartQuantities(req.user.id, req.body.books)
+    const cart = await cartService.updateCartQuantities(req.user.id, req.body.items)
     res.status(httpStatus.OK).json({message: "Cart item quantities updated successfully.", data: {cart}});
 })
 
