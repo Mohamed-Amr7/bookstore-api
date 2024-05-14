@@ -1,20 +1,22 @@
-import express from "express"
-import {orderController} from "../../controllers/index.mjs";
-import {isLoggedIn} from "../../middlewares/auth.mjs";
+import express from 'express'
+import {orderController} from '../../controllers/index.mjs'
+import {orderValidation} from '../../validations/index.mjs'
+import {isLoggedIn} from '../../middlewares/auth.mjs'
+import validate from '../../middlewares/validate.mjs'
 
 const router = express.Router()
 router.use(isLoggedIn)
 
 router.route('/')
-    .get(orderController.getOrders)
-    .post(orderController.addOrder)
+    .get(validate(orderValidation.queryOrders), orderController.queryOrders)
+    .post(validate(orderValidation.addOrder), orderController.addOrder)
 
 router.route('/:id')
-    .get(orderController.getOrder)
-    .delete(orderController.deleteOrder);
+    .get(validate(orderValidation.getOrder), orderController.getOrder)
+    .delete(validate(orderValidation.deleteOrder), orderController.deleteOrder);
 
 router.route('/:id/status')
-    .patch(orderController.updateOrderStatus);
+    .patch(validate(orderValidation.updateOrderStatus), orderController.updateOrderStatus);
 
 
 export default router
