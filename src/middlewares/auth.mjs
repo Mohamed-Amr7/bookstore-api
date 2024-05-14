@@ -24,3 +24,14 @@ export const isAdmin = (req, res, next) => {
     }
     next();
 }
+
+export const isOrderManagerOrAdmin = (req, res, next) => {
+    if (!req.user?.role) {
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'Please Authenticate');
+    }
+    if (req.user.role !== ROLES.ADMIN && req.user.role !== ROLES.ORDER_MANAGER) {
+        throw new ApiError(httpStatus.FORBIDDEN, 'You are not authorized to perform this action.');
+    }
+    next();
+}
+
