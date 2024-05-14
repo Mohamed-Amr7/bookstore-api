@@ -2,7 +2,7 @@ import catchAsync from "../utils/catchAsync.mjs";
 import httpStatus from "http-status";
 import orderService from "../services/order.service.mjs";
 
-const getOrders = catchAsync(async (req, res) => {
+const queryOrders = catchAsync(async (req, res) => {
     const paginatedOrders = await orderService.queryOrders(req.user.id, req.query)
 
     const response = {
@@ -41,7 +41,7 @@ const updateOrderStatus = catchAsync(async (req, res) => {
 });
 
 const orderController = {
-    getOrders,
+    queryOrders,
     addOrder,
     getOrder,
     deleteOrder,

@@ -1,7 +1,7 @@
 import httpStatus from "http-status"
 import ApiError from "../utils/ApiError.mjs"
 import {Book, Order} from "../models/index.mjs"
-import {bookService} from "./index.mjs";
+import {bookService, cartService} from "./index.mjs";
 import logger from "../config/logger.mjs";
 
 const MAX_RETRY_COUNT = 1
@@ -47,10 +47,14 @@ const getOrder = async (userId, id) => {
 const addOrder = async (userId, orderDetails) => {
     let order
     let updatedBooks = []
+    const cart = await cartService.getCartByUserId(userId)
+    if (cart.items.length === 0) {
+        throw new ApiError(httpStatus.BAD_REQUEST, "Cannot create order because the cart is empty");
+    }
     try {
         order = await (await Order.create({
             user: userId,
-            items: orderDetails.items,
+            items: cart.items,
             paymentMethod: orderDetails.paymentMethod,
             ...(orderDetails.shippingAddress && {shippingAddress: orderDetails.shippingAddress}),
             ...(orderDetails.contactNumber && {contactNumber: orderDetails.contactNumber}),
@@ -71,7 +75,7 @@ const addOrder = async (userId, orderDetails) => {
         while (isRetryRequired && retryCount < MAX_RETRY_COUNT) {
             try {
                 const updatedBook = await Book.findOneAndUpdate(
-                    {_id: item.book, stock: {$gte: item.quantity}},
+                    {_id: item.book.id, stock: {$gte: item.quantity}},
                     {$inc: {stock: -item.quantity, __v: 1}, $set: {updatedAt: new Date()}},
                     {new: true}
                 )
@@ -79,7 +83,7 @@ const addOrder = async (userId, orderDetails) => {
                 if (!updatedBook) {
                     await Order.findByIdAndDelete(order.id)
                     await bookService.revertStockUpdates(updatedBooks)
-                    throw new ApiError(httpStatus.BAD_REQUEST, "Insufficient stock for one or more items")
+                    throw new ApiError(httpStatus.BAD_REQUEST, `Insufficient stock for book with ${item.book.id}`)
                 }
 
                 updatedBooks.push({bookId: item.book.id, quantity: item.quantity})
@@ -101,7 +105,7 @@ const addOrder = async (userId, orderDetails) => {
             throw new ApiError(lastError.statusCode, lastError.message, true, lastError.stack);
         }
     }
-
+    await cartService.clearCart(userId)
     return order;
 }
 
