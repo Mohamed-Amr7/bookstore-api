@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 import {paginate, toJSON} from "./plugins/index.mjs"
 import {User} from "./index.mjs"
-import {ORDER_STATUS} from "../constants/index.mjs";
+import {ORDER_STATUS, PAYMENT_METHODS} from "../constants/index.mjs";
 
 /**
  * @typedef {Object} OrderItem
@@ -45,7 +45,7 @@ const orderSchema = new mongoose.Schema({
         },
         paymentMethod: {
             type: String,
-            enum: ['credit_card', 'paypal', 'cash_on_delivery'],
+            enum: Object.values(PAYMENT_METHODS),
         },
         contactNumber: {
             type: String,
