@@ -117,13 +117,22 @@ const removeBookFromCart = async (userId, bookId) => {
     return cart.populate('items.book')
 }
 
+const clearCart = async (userId) => {
+    const cart = await getCartByUserId(userId)
+    cart.items = []
+    await cart.save()
+    return cart
+};
+
 
 const cartService = {
+    getCartByUserId,
     getCart,
     addToCart,
     updateCartQuantities,
     removeFromCart,
     removeBookFromCart,
+    clearCart,
 }
 
 export default cartService

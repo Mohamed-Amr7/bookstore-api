@@ -13,6 +13,8 @@ router.route('/')
     .put(validate(cartValidation.updateCartQuantities), cartController.updateCartQuantities)
     .delete(validate(cartValidation.removeFromCart), cartController.removeFromCart);
 
+router.delete('/clear', cartController.clearCart);
+
 router.delete('/:bookId',validate(cartValidation.removeBookFromCart), cartController.removeBookFromCart);
 
 export default router
