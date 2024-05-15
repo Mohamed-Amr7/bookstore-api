@@ -4,7 +4,7 @@ import {Book, Order} from "../models/index.mjs"
 import {bookService, cartService} from "./index.mjs";
 import logger from "../config/logger.mjs";
 
-const MAX_RETRY_COUNT = 1
+const MAX_RETRY_COUNT = 5
 
 const queryOrders = async (userId, query) => {
     const {page = 1, limit = 10, ...filters} = query
