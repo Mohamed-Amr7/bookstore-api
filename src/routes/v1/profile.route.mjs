@@ -7,8 +7,7 @@ import {profileValidation} from "../../validations/index.mjs"
 const router = express.Router();
 router.use(isLoggedIn)
 
-router
-    .route('/')
+router.route('/')
     .get(profileController.getUserProfile)
     .put(validate(profileValidation.updateProfile), profileController.updateUserProfile)
     .delete(validate(profileValidation.deleteProfile), profileController.deleteUserProfile);

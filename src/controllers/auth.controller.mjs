@@ -5,7 +5,7 @@ import config from "../config/config.mjs";
 
 const register = catchAsync(async (req, res) => {
     const user = await userService.createUser(req.body)
-    res.status(httpStatus.CREATED).json({message: "User created successfully", data: {"user": user}})
+    res.status(httpStatus.CREATED).json({message: "User created successfully", data: {user}})
 })
 
 const login = catchAsync(async (req, res) => {

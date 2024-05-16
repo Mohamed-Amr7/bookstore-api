@@ -45,7 +45,7 @@ const config = {
             httpOnly: true,
             sameSite: 'Strict',
             secure: true,
-            maxAge: envVars.JWT_REFRESH_EXPIRATION_DAYS,
+            maxAge: envVars.JWT_REFRESH_EXPIRATION_DAYS  * 24 * 60 * 60 * 1000,
         }
     },
     email: {
